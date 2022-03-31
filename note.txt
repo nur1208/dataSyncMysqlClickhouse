@@ -11,10 +11,10 @@
         - {DONE} kafka
         - {DONE} kafka graphic user manager
         - {DONE} clickhouse
-- {TODO} create mysql actions simulator functionality:
-        - {TODO} insert data to mysql every [2|4|6] seconds
-        - {TODO} update data from mysql every [3|6|9] seconds
-        - {TODO} delete data from mysql every [4|8|12] seconds
+- {DONE} create mysql actions simulator functionality [insert| delete | update]: 
+        - {DONE} insert data to mysql every [2|4|6] seconds
+        - {DONE} update data from mysql every [3|6|9] seconds
+        - {DONE} delete data from mysql every [4|8|12] seconds
 - {TODO} create one topic with one partition in kafka server
 - {TODO} move data in mysql before listening to Mysql changes
 - {TODO} let clickhouse custom data from kafka server  
