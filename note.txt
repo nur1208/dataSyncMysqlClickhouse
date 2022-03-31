@@ -1,0 +1,26 @@
+- {DONE} install packages:
+        - pymysqlreplication 
+        - clickhouse-driver
+        - canal-python
+        - kafka-python
+        - Faker
+- {TODO} set up and start servers:
+        - canal
+        - kafka
+        - zookeeper
+        - kafka graphic user manager
+        - mysql 5.7
+        - clickhouse
+- {TODO} create mysql actions simulator functionality:
+        - {TODO} insert data to mysql every [2|4|6] seconds
+        - {TODO} update data from mysql every [3|6|9] seconds
+        - {TODO} delete data from mysql every [4|8|12] seconds
+- {TODO} create one topic with one partition in kafka server
+- {TODO} move data in mysql before listening to Mysql changes
+- {TODO} let clickhouse custom data from kafka server  
+- {TODO} listening to Mysql changes using canal-python
+- {TODO} produce binlog data to kafka
+
+
+not important
+- {TODO} replicate mysql data to kafka's topic using mysql-replication
