@@ -4,13 +4,13 @@
         - canal-python
         - kafka-python
         - Faker
-- {TODO} set up and start servers:
-        - canal
-        - kafka
-        - zookeeper
-        - kafka graphic user manager
-        - mysql 5.7
-        - clickhouse
+- {DONE} set up and start servers:
+        - {DONE} canal
+        - {DONE} mysql 5.7
+        - {DONE} zookeeper
+        - {DONE} kafka
+        - {DONE} kafka graphic user manager
+        - {DONE} clickhouse
 - {TODO} create mysql actions simulator functionality:
         - {TODO} insert data to mysql every [2|4|6] seconds
         - {TODO} update data from mysql every [3|6|9] seconds
