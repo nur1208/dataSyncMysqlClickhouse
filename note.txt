@@ -15,11 +15,23 @@
         - {DONE} insert data to mysql every [2|4|6] seconds
         - {DONE} update data from mysql every [3|6|9] seconds
         - {DONE} delete data from mysql every [4|8|12] seconds
-- {TODO} create one topic with one partition in kafka server
-- {TODO} move data in mysql before listening to Mysql changes
-- {TODO} let clickhouse custom data from kafka server  
+- {DONE} create one topic with one partition in kafka server
+- {DONE} move data in mysql before listening to Mysql changes
+- {TODO} let clickhouse Consume data from kafka server  
 - {TODO} listening to Mysql changes using canal-python
 - {TODO} produce binlog data to kafka
+- {TODO} save primary_key as filed when move data to kafka
+
+- NOTE create ten producer and each producer send 10 columns to partition 
+        the total columns is 100 (this is just example) and ten Consumer
+        producer1 send 10 columns to partition1 and consumer1 consume data
+        at the same time producer2 send the next 10 columns to partition2 and consumer2 consume data
+        ....
+        ....
+        ....
+        at the same time producerN send the next 10 columns to partitionN and consumerN consume data
+
+
 
 
 not important
