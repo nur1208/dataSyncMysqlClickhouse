@@ -1,7 +1,7 @@
 import configparser
 import time
 import pymysql
-
+import re
 
 def execSQL(db, sql, value = False):
     cursor = db.cursor()
@@ -21,6 +21,74 @@ def execSQL(db, sql, value = False):
 def printMessage(message):
     print(time.strftime('[%H:%M:%S]') +" "+message)
 
+def convertMysqlDataTypeClickhouse(datatype):
+    processedDatattype = re.sub("\(.*\)", "", datatype.upper())
+
+    if(processedDatattype == "TINYINT UNSIGNED"):
+        return "UInt8"
+    elif(processedDatattype == "SMALLINT UNSIGNED"):
+        return "UInt16"
+    elif(processedDatattype == "INT UNSIGNED"
+        or processedDatattype == "MEDIUMINT UNSIGNED"
+    ):
+        return "UInt32"
+    elif(processedDatattype == "BIGINT UNSIGNED"):
+        return "UInt64"
+
+    
+    elif(processedDatattype == "TINYINT"):
+        return "Int8"
+    elif(processedDatattype == "SMALLINT"):
+        return "Int16"
+    elif(processedDatattype == "INT"
+        or processedDatattype == "MEDIUMINT"
+    ):
+        return "Int32"
+    elif(processedDatattype == "BIGINT"):
+        return "Int64"
+    
+    
+    elif(processedDatattype == "FLOAT"):
+        return "Float32"
+    elif(processedDatattype == "DOUBLE"
+        or processedDatattype == "DECIMAL"):
+        return "Float64"
+
+    elif(processedDatattype == "BLOB" 
+        or processedDatattype == "TINYTEXT"
+        or processedDatattype == "MEDIUMTEXT"
+        or processedDatattype == "LONGTEXT"
+        or processedDatattype == "TINYBLOB"
+        or processedDatattype == "MEDIUMBLOB"
+        or processedDatattype == "LONGBLOB"
+        or processedDatattype == "TEXT"
+        or processedDatattype == "VARBINARY"
+        or processedDatattype == "VARCHAR"):
+        return "String"
+
+    
+    elif(processedDatattype == "CHAR" 
+        or processedDatattype == "BINARY"):
+        return "FixedString(32)"
+    
+    elif(processedDatattype == "DATE"):
+        return "Date"
+
+    elif(processedDatattype == "DATETIME" 
+        or processedDatattype == "TIME"
+        or processedDatattype == "YEAR"
+        or processedDatattype == "TIMESTAMP"):
+        return "DateTime"
+    
+    elif(processedDatattype == "ENUM"):
+        return "Enum"
+    elif(processedDatattype == "SET"):
+        return "Set"
+    
+
+    
+    
+    return "didn't find ❌"
 def getConfig():
     conf = configparser.ConfigParser()
     # print(conf)
