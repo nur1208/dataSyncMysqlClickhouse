@@ -2,6 +2,8 @@ import configparser
 import time
 import pymysql
 import re
+from kafka import KafkaProducer
+import json
 
 def execSQL(db, sql, value = False):
     cursor = db.cursor()
@@ -20,6 +22,14 @@ def execSQL(db, sql, value = False):
 
 def printMessage(message):
     print(time.strftime('[%H:%M:%S]') +" "+message)
+
+def createKafkaProducer():
+    def json_serializer(data):
+        return json.dumps(data).encode("utf-8")
+
+    return KafkaProducer(bootstrap_servers=['127.0.0.1:9092'],
+                         value_serializer=json_serializer)
+
 
 def convertMysqlDataTypeClickhouse(datatype):
     processedDatattype = re.sub("\(.*\)", "", datatype.upper())
