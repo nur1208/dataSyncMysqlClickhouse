@@ -19,9 +19,10 @@
 - {DONE} move data in mysql before listening to Mysql changes
 - {DONE} let clickhouse Consume data from kafka server  
 - {DONE} creating convertMysqlDataTypeClickhouse function
-- {TODO} listening to Mysql changes using canal-python
-- {TODO} produce binlog data to kafka 
-- {TODO} create clickhouseConsumer function 
+- {DONE} listening to Mysql changes using canal-python
+- {DONE} produce binlog data to kafka 
+- {TODO} create clickhouseConsumer function part 1
+- {TODO} create  listeningToMysqlChanges function
 
 - note use clickhouse 22.1.4.30 the new version didn't work
 - NOTE create ten producer and each producer send 10 columns to partition 

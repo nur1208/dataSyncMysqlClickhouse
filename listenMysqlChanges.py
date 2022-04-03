@@ -4,7 +4,7 @@ from canal.client import Client
 from canal.protocol import EntryProtocol_pb2
 from canal.protocol import CanalProtocol_pb2
 
-from utils import createKafkaProducer
+from utils import createKafkaProducer, printMessage
 
 client = Client()
 client.connect(host='127.0.0.1', port=11111)
@@ -78,10 +78,10 @@ while True:
                 action=event_type_string,
                 format_data_2=format_data_2
             )
+            printMessage(f'action: {format_data_2["operation_type"]}')
 
             producer.send("dataSyncMysqlClickhouseTest2",format_data_2)
 
-            print(data)
     # time.sleep(1)
 
 client.disconnect()
