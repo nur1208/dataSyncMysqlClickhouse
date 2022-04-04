@@ -1,35 +1,29 @@
 from clickhouse_driver import Client
 
-from utils import convertMysqlDataTypeClickhouse, execSQL, getConfig, printMessage
+from utils import convertMysqlDataTypeClickhouse, createClickhouseSchema, execSQL, getConfig, printMessage
 
 client = Client(host='localhost',user="default",password="nur")
 
-def clickhouseConsumer(db, table,topic , group, 
+def clickhouseConsumer(db, table,mysqlSchema,topic , group, 
     kafkaServer ="127.0.0.1:9092"):
 
+    [clickhouseSchema, primary_key] = createClickhouseSchema(mysqlSchema)
+    
+    # print(clickhouseSchema)
+    # print(primary_key)
+    
 
     sqlCreateClickhouseTable = f"""
                 CREATE TABLE {db}.{table} (
-                    operation_type String,
-                    db String,
-                    table String,
-                    createdAt UInt64,
-                    name String,
-                    address String,
-                    id UInt64
+                    {clickhouseSchema}
                 ) Engine = MergeTree
-                ORDER BY (id, createdAt)
+                ORDER BY ({primary_key}, createdAt)
 
     """
 
+    print(sqlCreateClickhouseTable)
     sqlConnectToKafka = f""" CREATE TABLE {db}.{table}_queue (
-            operation_type String,
-            db String,
-            table String,
-            createdAt UInt64,
-            name String,
-            address String,
-            id UInt64
+            {clickhouseSchema}
         ) ENGINE = Kafka 
         SETTINGS kafka_broker_list = '{kafkaServer}',
         kafka_topic_list = '{topic}',
@@ -63,16 +57,11 @@ if __name__ == "__main__":
 
     db = getConfig()
     columnsName = execSQL(db,"DESCRIBE customers").fetchall()
+    
+    # [clickhouseSchema, primary_key] = createClickhouseSchema(columnsName)
+    
+    # print(clickhouseSchema)
+    # print(primary_key)
 
-    print(columnsName)
-    for column in columnsName:
-        primary_key = ''
-        if(column[3] == "PRI"):
-            primary_key = column[0]
-            print(primary_key)
-        datatype = convertMysqlDataTypeClickhouse(column[1])
-        print(f'datatype = {datatype}, column={column[1]}')
-
-
-    # clickhouseConsumer("pythondb", "customers8", 
-    #     "dataSyncMysqlClickhouseTest2", "group4")
+    clickhouseConsumer("pythondb", "customers10", 
+        columnsName,"dataSyncMysqlClickhouseTest2", "group5")

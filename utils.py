@@ -30,6 +30,18 @@ def createKafkaProducer():
     return KafkaProducer(bootstrap_servers=['127.0.0.1:9092'],
                          value_serializer=json_serializer)
 
+def createClickhouseSchema(mysqlSchema):
+    primary_key = ''
+    clickhouseSchema = 'createdAt UInt64,'
+    for column in mysqlSchema:
+        if(column[3] == "PRI"):
+            primary_key = column[0]
+        datatype = convertMysqlDataTypeClickhouse(column[1])
+        clickhouseSchema =clickhouseSchema + f'{column[0]} {datatype},'
+    
+    clickhouseSchema = clickhouseSchema[:-1]
+    return [clickhouseSchema, primary_key]
+
 
 def convertMysqlDataTypeClickhouse(datatype):
     processedDatattype = re.sub("\(.*\)", "", datatype.upper())
