@@ -32,7 +32,7 @@ def createKafkaProducer():
 
 def createClickhouseSchema(mysqlSchema):
     primary_key = ''
-    clickhouseSchema = 'createdAt UInt64,'
+    clickhouseSchema = 'createdAt UInt64,operation_type String,'
     for column in mysqlSchema:
         if(column[3] == "PRI"):
             primary_key = column[0]

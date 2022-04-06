@@ -23,7 +23,7 @@
 - {DONE} produce binlog data to kafka 
 - {DONE} create clickhouseConsumer function part 1
 - {DONE} creating clickhouseConsumer function part 2 and creating createClickhouseSchema
-- {TODO} creating  listeningToMysqlChanges function
+- {DONE} creating  listeningToMysqlChanges function
 
 - note use clickhouse 22.1.4.30 the new version didn't work
 - NOTE create ten producer and each producer send 10 columns to partition 

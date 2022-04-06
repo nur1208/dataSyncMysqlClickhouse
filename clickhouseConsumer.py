@@ -63,5 +63,5 @@ if __name__ == "__main__":
     # print(clickhouseSchema)
     # print(primary_key)
 
-    clickhouseConsumer("pythondb", "customers10", 
-        columnsName,"dataSyncMysqlClickhouseTest2", "group5")
+    clickhouseConsumer("pythondb", "customers12", 
+        columnsName,"dataSyncMysqlClickhouseTest2", "group6")
