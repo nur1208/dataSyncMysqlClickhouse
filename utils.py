@@ -30,6 +30,8 @@ def createKafkaProducer():
     return KafkaProducer(bootstrap_servers=['127.0.0.1:9092'],
                          value_serializer=json_serializer)
 
+
+
 def createClickhouseSchema(mysqlSchema):
     primary_key = ''
     clickhouseSchema = 'createdAt UInt64,operation_type String,'
@@ -111,7 +113,9 @@ def convertMysqlDataTypeClickhouse(datatype):
     
     
     return "didn't find ❌"
-def getConfig():
+
+
+def getConfig(db_name = "pythonDB"):
     conf = configparser.ConfigParser()
     # print(conf)
     try:
@@ -120,17 +124,22 @@ def getConfig():
         port = 3307
         user = "test"
         password = "12345678"
-        db_name = "pythonDB"
+        db_name = db_name
         charset = "utf8"
-        print(time.strftime('[%H:%M:%S]') + " Configuration succeed. ✅")
+        print(time.strftime('[%H:%M:%S]') + " Mysql Configuration succeed. ✅")
     except:
-        print(time.strftime('[%H:%M:%S]') + " Configuration failed. ❌")
+        print(time.strftime('[%H:%M:%S]') + " Mysql Configuration failed. ❌")
 
     try:
         # global db
         db = pymysql.connect(host=host,user=user,password=password,database=db_name,port=port,charset=charset)
-        print(time.strftime('[%H:%M:%S]') + ' Database connection succeed. ✅')
+        print(time.strftime('[%H:%M:%S]') + ' Mysql Database connection succeed. ✅')
         return db
 
     except:
-        print(time.strftime('[%H:%M:%S]') + ' Database connection failed ❌')
+        print(time.strftime('[%H:%M:%S]') + ' Mysql Database connection failed ❌')
+
+def getMysqlSchema(db, table):
+    # db = getConfig(db_name)
+    columnsName = execSQL(db,f"DESCRIBE {table}").fetchall()
+    return columnsName

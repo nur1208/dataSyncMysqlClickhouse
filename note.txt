@@ -24,8 +24,11 @@
 - {DONE} create clickhouseConsumer function part 1
 - {DONE} creating clickhouseConsumer function part 2 and creating createClickhouseSchema
 - {DONE} creating  listeningToMysqlChanges function
+- {DONE} creating mainDataSynchronization function to call the following functions: clickhouseConsumer, moveData, listeningToMysqlChanges part 1 
+- {TODO} creating mainDataSynchronization function to call the following functions: clickhouseConsumer, moveData, listeningToMysqlChanges part 2 
 
-- note use clickhouse 22.1.4.30 the new version didn't work
+
+- note use clickhouse 22.1.4.30 the new version doesn't work
 - NOTE create ten producer and each producer send 10 columns to partition 
         the total columns is 100 (this is just example) and ten Consumer
         producer1 send 10 columns to partition1 and consumer1 consume data
@@ -40,3 +43,4 @@
 
 not important
 - {TODO} replicate mysql data to kafka's topic using mysql-replication
+- {TODO} creating get getUserInput function:{mysqlDB, mysqlTable, clickhouseDB, clickhouseTable, kafkaTopic, KafkaGroup}

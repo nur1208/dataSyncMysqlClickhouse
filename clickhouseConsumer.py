@@ -14,15 +14,15 @@ def clickhouseConsumer(db, table,mysqlSchema,topic , group,
     
 
     sqlCreateClickhouseTable = f"""
-                CREATE TABLE {db}.{table} (
+                CREATE TABLE IF NOT EXISTS {db}.{table} (
                     {clickhouseSchema}
                 ) Engine = MergeTree
                 ORDER BY ({primary_key}, createdAt)
-
     """
 
+    printMessage("clickhouse Schema:")
     print(sqlCreateClickhouseTable)
-    sqlConnectToKafka = f""" CREATE TABLE {db}.{table}_queue (
+    sqlConnectToKafka = f""" CREATE TABLE IF NOT EXISTS {db}.{table}_queue (
             {clickhouseSchema}
         ) ENGINE = Kafka 
         SETTINGS kafka_broker_list = '{kafkaServer}',
@@ -32,14 +32,23 @@ def clickhouseConsumer(db, table,mysqlSchema,topic , group,
         """
 
     sqlMaterializedView = f"""
-            CREATE MATERIALIZED VIEW {db}.{table}_queue_mv TO {db}.{table} AS
+            CREATE MATERIALIZED VIEW  IF NOT EXISTS {db}.{table}_queue_mv TO {db}.{table} AS
                 SELECT *
                 FROM {db}.{table}_queue;
 
     """
+
+    sqlCreateDatabaseIfNotExists = f"""
+        CREATE DATABASE IF NOT EXISTS {db}
+    """
+
     try:
+        client.execute(sqlCreateDatabaseIfNotExists)
+        printMessage("create database if not exists ✅")
+
+        
         client.execute(sqlCreateClickhouseTable)
-        printMessage("clickhouse table created successfully ✅")
+        printMessage("clickhouse table created successfully if not exists ✅")
 
         client.execute(sqlConnectToKafka)
         printMessage("connected to kafka successfully ✅")
@@ -49,9 +58,11 @@ def clickhouseConsumer(db, table,mysqlSchema,topic , group,
         printMessage("transfer data between Kafka and the clickhouse table ✅")
 
 
+        return True
     except Exception as e:
         print(e)
         printMessage("something went wrong while creating clickhouse table and connected to kafka ❌")
+        return False
 
 if __name__ == "__main__":
 
