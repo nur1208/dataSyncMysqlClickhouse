@@ -9,15 +9,15 @@ def clickhouseConsumer(db, table,mysqlSchema,topic , group,
 
     [clickhouseSchema, primary_key] = createClickhouseSchema(mysqlSchema)
     
-    # print(clickhouseSchema)
-    # print(primary_key)
-    
+    if(primary_key == ''): 
+        printMessage(f"didn't find primary key from mysqlSchema ❌")
+        return False
 
     sqlCreateClickhouseTable = f"""
                 CREATE TABLE IF NOT EXISTS {db}.{table} (
                     {clickhouseSchema}
                 ) Engine = MergeTree
-                ORDER BY ({primary_key}, createdAt)
+                ORDER BY (createdAt, {primary_key})
     """
 
     printMessage("clickhouse Schema:")

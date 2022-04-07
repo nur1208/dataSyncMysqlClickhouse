@@ -12,7 +12,8 @@ client.check_valid(username=b'canals', password=b'12345678')
 client.subscribe(client_id=b'1', destination=b'example', filter=b'.*\\..*')
 
 producer = createKafkaProducer()
-def listeningToMysqlChanges(db, table, topic):
+def listeningToMysqlChanges(dbName, table, topic):
+    printMessage(f"starting listening to mysql binlog for {dbName}.{table} ✅")
     while True:
         message = client.get(100)
         entries = message['entries']
@@ -28,7 +29,7 @@ def listeningToMysqlChanges(db, table, topic):
             tableCurrent = header.tableName
             event_type = header.eventType
 
-            if db != databaseCurrent or table !=tableCurrent:
+            if dbName != databaseCurrent or table !=tableCurrent:
                 continue
             for row in row_change.rowDatas:
                 format_data_2 = dict()

@@ -1,4 +1,5 @@
 from clickhouseConsumer import clickhouseConsumer
+from listenMysqlChanges import listeningToMysqlChanges
 from moveData import moveData
 from utils import getConfig, getMysqlSchema
 
@@ -19,12 +20,13 @@ def mainDataSynchronization(mysqlDB, mysqlTable, clickhouseDB,
         return
 
     # moving initail data in mysql to clickhouse
-    moveData(db, mysqlTable, kafkaTopic) 
+    # moveData(db, mysqlTable, kafkaTopic) 
 
     
-    
+    # activating canal to listing to mysql binlog
+    listeningToMysqlChanges(mysqlDB, mysqlTable, kafkaTopic)
 
 if __name__ == "__main__":
-    mainDataSynchronization("pythondb", "customers", "clickhouseTest",
-        "customers14","dataSyncMysqlClickhouseTest2","group7")
+    mainDataSynchronization("example", "test", "clickhouseTest",
+        "test2","test_topic","group7")
 
